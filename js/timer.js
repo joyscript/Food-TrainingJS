@@ -34,7 +34,7 @@ const setTimer = (endtime) => {
       timeBox.nextSibling.textContent = normalizeWord(timeRem[i])[i];
     });
 
-    if (timeRem.msec <= 1000) clearInterval(timeIterval);
+    if (timeRem[4] <= 1000) clearInterval(timeIterval);
   };
 
   updateTimer();
