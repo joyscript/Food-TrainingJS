@@ -20,7 +20,7 @@ const openModalOnScroll = () => {
   if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight) openModal();
 };
 
-const modalTimer = setTimeout(openModal, 5000);
+// const modalTimer = setTimeout(openModal, 5000);
 
 modalOpenBtns.forEach((btn) => btn.addEventListener('click', openModal));
 
