@@ -5,7 +5,6 @@ const scrollBar = window.innerWidth - document.documentElement.offsetWidth;
 
 const openModal = () => {
   modal.classList.toggle('show');
-  document.addEventListener('click', closeModalOnClick);
   document.body.style.cssText = `overflow: hidden; padding-right: ${scrollBar}px`;
 
   clearInterval(modalTimer);
@@ -14,12 +13,7 @@ const openModal = () => {
 
 const closeModal = () => {
   modal.classList.toggle('show');
-  document.removeEventListener('click', closeModalOnClick);
   document.body.style.cssText = `overflow: auto; padding-right: 0`;
-};
-
-const closeModalOnClick = (e) => {
-  if (e.target === modal) closeModal();
 };
 
 const openModalOnScroll = () => {
@@ -29,5 +23,15 @@ const openModalOnScroll = () => {
 const modalTimer = setTimeout(openModal, 5000);
 
 modalOpenBtns.forEach((btn) => btn.addEventListener('click', openModal));
+
 modalCloseBtn.addEventListener('click', closeModal);
+
+document.addEventListener('click', (e) => {
+  if (e.target === modal && modal.classList.contains('show')) closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Escape' && modal.classList.contains('show')) closeModal();
+});
+
 window.addEventListener('scroll', openModalOnScroll);
