@@ -23,20 +23,5 @@
     }
   ],
   "requests": [
-    {
-      "name": "ivan",
-      "phone": "78945612",
-      "id": 1
-    },
-    {
-      "name": "vera",
-      "phone": "12345678",
-      "id": 2
-    },
-    {
-      "name": "ivan",
-      "phone": "78945612",
-      "id": 3
-    }
   ]
 }

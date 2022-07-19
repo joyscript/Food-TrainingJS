@@ -51,7 +51,7 @@ const postFormData = (form) => {
     const formData = new FormData(form);
     const jsonData = JSON.stringify(Object.fromEntries(formData.entries()));
 
-    postData('http://localhost:3000/requests', jsonData)
+    postData('db.json', jsonData)
       .then((data) => {
         console.log(data);
         showThanksModal(message.success);
