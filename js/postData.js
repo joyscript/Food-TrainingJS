@@ -27,7 +27,21 @@ const showThanksModal = (message) => {
   setTimeout(closeThanksModal, 3000);
 };
 
-const postData = (form) => {
+const postData = async (url, data) => {
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: data,
+  });
+
+  if (!res.ok) throw new Error(`Ошибка запроса по адресу ${url}, статус: ${res.status}`);
+
+  return await res.json();
+};
+
+const postFormData = (form) => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -35,22 +49,15 @@ const postData = (form) => {
     spinner.classList.add('show');
 
     const formData = new FormData(form);
-    const dataObj = {};
-    formData.forEach((value, name) => (dataObj[name] = value));
+    const jsonData = JSON.stringify(Object.fromEntries(formData.entries()));
 
-    fetch('server.php', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(dataObj),
-    })
-      .then((data) => data.text())
+    postData('http://localhost:3000/requests', jsonData)
       .then((data) => {
         console.log(data);
         showThanksModal(message.success);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error(err.message);
         showThanksModal(message.failure);
       })
       .finally(() => {
@@ -60,4 +67,4 @@ const postData = (form) => {
   });
 };
 
-forms.forEach((form) => postData(form));
+forms.forEach((form) => postFormData(form));

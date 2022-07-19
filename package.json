@@ -1,0 +1,22 @@
+{
+  "name": "food-trainingjs",
+  "version": "1.0.0",
+  "description": "https://joyscript.github.io/Food-TrainingJS/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joyscript/Food-TrainingJS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joyscript/Food-TrainingJS/issues"
+  },
+  "homepage": "https://github.com/joyscript/Food-TrainingJS#readme",
+  "devDependencies": {
+    "json-server": "^0.17.0"
+  }
+}
