@@ -1,12 +1,12 @@
 const timeBoxes = document.querySelectorAll('.timer span');
-const period = 7;
 
 let deadline = new Date('2022-08-08T00:00:00');
 
 const updateDeadline = () => {
   if (deadline - Date.now() <= 0) {
-    deadline = new Date(Date.parse(deadline) + 1000 * 60 * 60 * 24 * period);
-    updateDeadline();
+    const msecPerWeek = 1000 * 60 * 60 * 24 * 7;
+    const passedTime = (Date.now() - deadline) % msecPerWeek; // прошедшее время с начала новой недели
+    deadline = new Date(Date.now() - passedTime + msecPerWeek); // дедлайн обновляется каждую неделю на 1 неделю вперед
   }
 };
 
