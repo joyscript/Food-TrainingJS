@@ -40,18 +40,21 @@ const normalizeWord = (num) => {
   }
 };
 
-function updateTimer() {
-  const timeRem = getTimeRemaining();
-  const timer = setTimeout(updateTimer, 1000);
+const setTimer = () => {
+  const timerId = setInterval(updateTimer, 1000);
+  updateTimer();
 
-  if (timeRem[4] <= 1000) clearInterval(timer);
+  function updateTimer() {
+    const timeRem = getTimeRemaining();
+    if (timeRem[4] <= 1000) clearInterval(timerId);
 
-  timeBoxes.forEach((timeBox, i) => {
-    timeBox.textContent = normalizeNum(timeRem[i]);
-    timeBox.nextSibling.textContent = normalizeWord(timeRem[i])[i];
-  });
-}
+    timeBoxes.forEach((timeBox, i) => {
+      timeBox.textContent = normalizeNum(timeRem[i]);
+      timeBox.nextSibling.textContent = normalizeWord(timeRem[i])[i];
+    });
+  }
+};
 
 updateDeadline();
 updateDeadlineText();
-updateTimer();
+setTimer();
