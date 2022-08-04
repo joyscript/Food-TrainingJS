@@ -6,24 +6,22 @@ const openModal = () => {
   modal.classList.add('active');
   document.body.style.cssText = `overflow: hidden; padding-right: ${scrollBar}px`;
 
-  // clearInterval(modalTimer);
   window.removeEventListener('scroll', openModalOnScroll);
+  // clearInterval(modalTimer);
 };
 
 const closeModal = () => {
   modal.classList.remove('active');
-  document.body.style.cssText = `overflow: auto; padding-right: 0`;
+  document.body.style = '';
 };
 
 const openModalOnScroll = () => {
   if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight) openModal();
 };
 
-// const modalTimer = setTimeout(openModal, 5000);
-
 modalOpenBtns.forEach((btn) => btn.addEventListener('click', openModal));
 
-document.addEventListener('click', (e) => {
+modal.addEventListener('click', (e) => {
   if (e.target === modal || e.target.classList.contains('modal__close')) closeModal();
 });
 
@@ -32,3 +30,5 @@ document.addEventListener('keydown', (e) => {
 });
 
 window.addEventListener('scroll', openModalOnScroll);
+
+// const modalTimer = setTimeout(openModal, 5000); 
