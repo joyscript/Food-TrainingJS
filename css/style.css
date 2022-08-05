@@ -284,6 +284,7 @@ a {
 .offer__slide {
   width: 100%;
   height: 390px;
+  display: none;
 }
 .offer__slide img {
   width: 100%;
@@ -650,7 +651,12 @@ img.spinner.show {
   display: block;
 }
 
-#end-day, #end-month {
+#end-day,
+#end-month {
   font-size: inherit;
   font-weight: inherit;
+}
+
+.offer__slider * {
+  user-select: none;
 }
