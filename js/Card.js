@@ -1,28 +1,24 @@
 class MenuCard {
-  constructor(src, alt, title, descr, price, parentSelector, classes) {
+  constructor(src, alt, title, descr, price, parentSelector, ...classes) {
     this.src = src;
     this.alt = alt;
     this.title = title;
     this.descr = descr;
     this.price = price;
     this.container = document.querySelector(parentSelector);
-    if (classes) this.classes = [...classes];
+    this.classes = classes;
     this.rate = 70;
     this.changeToRub();
   }
 
   changeToRub() {
-    this.price = this.price * this.rate;
+    this.price = +this.price * this.rate;
   }
 
   render() {
     const card = document.createElement('div');
 
-    if (this.classes) {
-      card.classList.add(...this.classes);
-    } else {
-      card.classList.add('menu__item');
-    }
+    this.classes.length ? card.classList.add(...this.classes) : card.classList.add('menu__item');
 
     card.innerHTML = `
       <img src=${this.src} alt=${this.alt} />
@@ -39,15 +35,11 @@ class MenuCard {
   }
 }
 
-const getData = async (url) => {
-  const res = await fetch(url);
-
-  if (!res.ok) throw new Error(`Ошибка запроса по адресу ${url}, статус: ${res.status}`);
-
-  return await res.json();
-};
-
-getData('db.json')
+fetch('./db.json')
+  .then((res) => {
+    if (!res.ok) throw new Error(`Ошибка запроса, статус: ${res.status} (${res.statusText})`);
+    return res.json();
+  })
   .then((data) => {
     data.menu.forEach(({ img, altimg, title, descr, price }) => {
       new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
