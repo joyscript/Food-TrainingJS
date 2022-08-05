@@ -1,18 +1,42 @@
 const modal = document.querySelector('.modal');
+const modalForm = modal.querySelector('.modal form');
+const modalContent = modal.querySelector('.modal__content');
 const modalOpenBtns = document.querySelectorAll('[data-modal]');
 const scrollBar = window.innerWidth - document.documentElement.offsetWidth;
+
+let closeTimerId;
+let thanksModal;
 
 const openModal = () => {
   modal.classList.add('active');
   document.body.style.cssText = `overflow: hidden; padding-right: ${scrollBar}px`;
-
   window.removeEventListener('scroll', openModalOnScroll);
-  // clearInterval(modalTimer);
 };
 
 const closeModal = () => {
   modal.classList.remove('active');
   document.body.style = '';
+  if (modal.classList.contains('thanks')) closeThanksModal();
+};
+
+const showThanksModal = (message) => {
+  if (!modal.classList.contains('active')) openModal();
+  modal.classList.add('thanks');
+  modalForm.classList.add('hide');
+
+  thanksModal = document.createElement('div');
+  thanksModal.classList.add('modal__title');
+  thanksModal.textContent = message;
+  modalContent.append(thanksModal);
+
+  closeTimerId = setTimeout(() => closeModal(), 3000);
+};
+
+const closeThanksModal = () => {
+  thanksModal.remove();
+  modal.classList.remove('thanks');
+  modalForm.classList.remove('hide');
+  clearTimeout(closeTimerId);
 };
 
 const openModalOnScroll = () => {
@@ -30,5 +54,3 @@ document.addEventListener('keydown', (e) => {
 });
 
 window.addEventListener('scroll', openModalOnScroll);
-
-// const modalTimer = setTimeout(openModal, 5000); 
