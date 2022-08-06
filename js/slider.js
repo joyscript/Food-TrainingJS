@@ -6,7 +6,6 @@ const current = slider.querySelector('#current');
 const total = slider.querySelector('#total');
 
 let ind = 0;
-let isEnabled = true;
 
 total.textContent = normalizeNum(slides.length);
 current.textContent = normalizeNum(ind + 1);
@@ -31,30 +30,23 @@ const changeSlide = () => {
 };
 
 const hideSlide = (direction) => {
-  isEnabled = false;
+  slider.classList.add('lock');
   slides[ind].classList.add(direction);
 
-  slides[ind].addEventListener(
-    'animationend',
-    function () {
-      this.classList.remove('active', direction);
-    },
-    { once: true }
-  );
+  const deactivateSlide = (e) => e.target.classList.remove('active', direction);
+  slides[ind].addEventListener('animationend', (e) => deactivateSlide(e), { once: true });
 };
 
 const showSlide = (direction) => {
   slides[ind].classList.add('next', direction);
 
-  slides[ind].addEventListener(
-    'animationend',
-    function () {
-      this.classList.remove('next', direction);
-      this.classList.add('active');
-      isEnabled = true;
-    },
-    { once: true }
-  );
+  const activateSlide = (e) => {
+    e.target.classList.remove('next', direction);
+    e.target.classList.add('active');
+    slider.classList.remove('lock');
+  };
+
+  slides[ind].addEventListener('animationend', (e) => activateSlide(e), { once: true });
 };
 
 const showLeftSlide = (i) => {
@@ -71,20 +63,20 @@ const showRightSlide = (i) => {
   showSlide('from-right');
 };
 
-btnPrev.addEventListener('click', () => {
-  if (isEnabled) showLeftSlide();
-});
+let sliderTimerId = setInterval(() => showRightSlide(), 2000);
 
-btnNext.addEventListener('click', () => {
-  if (isEnabled) showRightSlide();
-});
+btnPrev.addEventListener('click', () => showLeftSlide());
+btnNext.addEventListener('click', () => showRightSlide());
 
 dots.forEach((dot, i) => {
   dot.addEventListener('click', () => {
-    if (isEnabled) {
-      i < ind ? showLeftSlide(i) : showRightSlide(i);
-    }
+    i < ind ? showLeftSlide(i) : showRightSlide(i);
   });
+});
+
+slider.addEventListener('pointerover', () => clearInterval(sliderTimerId));
+slider.addEventListener('pointerout', () => {
+  sliderTimerId = setInterval(() => showRightSlide(), 2000);
 });
 
 // ----------------------------------------------------
@@ -104,22 +96,24 @@ const swipeSlides = () => {
   const maxTime = 300;
 
   const changeSwipeSlide = () => {
-    if (elapsedTime <= maxTime && Math.abs(distX) >= minDistX && Math.abs(distY) <= maxDistY && isEnabled) {
+    if (elapsedTime <= maxTime && Math.abs(distX) >= minDistX && Math.abs(distY) <= maxDistY) {
       distX > 0 ? showLeftSlide() : showRightSlide();
     }
   };
 
   const startActions = (e) => {
-    e.preventDefault();
+    if (e.type == 'mousedown') e.preventDefault();
     if (e.type == 'touchstart') e = e.changedTouches[0];
+
     startX = e.pageX;
     startY = e.pageY;
     startTime = new Date().getTime();
   };
 
   const endActions = (e) => {
-    e.preventDefault();
+    if (e.type == 'mouseup') e.preventDefault();
     if (e.type == 'touchend') e = e.changedTouches[0];
+
     distX = e.pageX - startX;
     distY = e.pageY - startY;
     elapsedTime = new Date().getTime() - startTime;

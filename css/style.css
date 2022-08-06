@@ -261,6 +261,9 @@ a {
   align-items: flex-end;
   user-select: none;
 }
+.offer__slider.lock {
+  pointer-events: none;
+}
 .offer__slider-counter {
   display: flex;
   width: 180px;
