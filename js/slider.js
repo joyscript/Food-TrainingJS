@@ -23,12 +23,6 @@ for (let i = 0; i < slides.length; i++) {
 
 const dots = controls.querySelectorAll('.slider-dot');
 
-const changeSlide = () => {
-  current.textContent = normalizeNum(ind + 1);
-  controls.querySelector('.slider-dot.active').classList.remove('active');
-  dots[ind].classList.add('active');
-};
-
 const hideSlide = (direction) => {
   slider.classList.add('lock');
   slides[ind].classList.add(direction);
@@ -38,6 +32,10 @@ const hideSlide = (direction) => {
 };
 
 const showSlide = (direction) => {
+  current.textContent = normalizeNum(ind + 1);
+  controls.querySelector('.slider-dot.active').classList.remove('active');
+  dots[ind].classList.add('active');
+
   slides[ind].classList.add('next', direction);
 
   const activateSlide = (e) => {
@@ -52,54 +50,36 @@ const showSlide = (direction) => {
 const showLeftSlide = (i) => {
   hideSlide('to-right');
   i || i == 0 ? (ind = i) : (ind = (ind - 1 + slides.length) % slides.length);
-  changeSlide();
   showSlide('from-left');
 };
 
 const showRightSlide = (i) => {
   hideSlide('to-left');
   i || i == 0 ? (ind = i) : (ind = (ind + 1) % slides.length);
-  changeSlide();
   showSlide('from-right');
 };
-
-let sliderTimerId = setInterval(() => showRightSlide(), 2000);
 
 btnPrev.addEventListener('click', () => showLeftSlide());
 btnNext.addEventListener('click', () => showRightSlide());
 
 dots.forEach((dot, i) => {
-  dot.addEventListener('click', () => {
-    i < ind ? showLeftSlide(i) : showRightSlide(i);
-  });
+  dot.addEventListener('click', () => (i < ind ? showLeftSlide(i) : showRightSlide(i)));
 });
 
+let sliderTimerId = setInterval(() => showRightSlide(), 2500);
+
 slider.addEventListener('pointerover', () => clearInterval(sliderTimerId));
-slider.addEventListener('pointerout', () => {
-  sliderTimerId = setInterval(() => showRightSlide(), 2000);
-});
+slider.addEventListener('pointerout', () => (sliderTimerId = setInterval(() => showRightSlide(), 2500)));
 
 // ----------------------------------------------------
 
 const swipeSlides = () => {
   const surface = slider.querySelector('.offer__slider-wrapper');
 
-  let startX = 0;
-  let startY = 0;
-  let distX = 0;
-  let distY = 0;
-  let startTime = 0;
-  let elapsedTime = 0;
-
+  let startX, startY, distX, distY, startTime, elapsedTime;
   const minDistX = 50;
   const maxDistY = 100;
   const maxTime = 300;
-
-  const changeSwipeSlide = () => {
-    if (elapsedTime <= maxTime && Math.abs(distX) >= minDistX && Math.abs(distY) <= maxDistY) {
-      distX > 0 ? showLeftSlide() : showRightSlide();
-    }
-  };
 
   const startActions = (e) => {
     if (e.type == 'mousedown') e.preventDefault();
@@ -118,7 +98,9 @@ const swipeSlides = () => {
     distY = e.pageY - startY;
     elapsedTime = new Date().getTime() - startTime;
 
-    changeSwipeSlide();
+    if (elapsedTime <= maxTime && Math.abs(distX) >= minDistX && Math.abs(distY) <= maxDistY) {
+      distX > 0 ? showLeftSlide() : showRightSlide();
+    }
   };
 
   surface.addEventListener('mousedown', (e) => startActions(e));
