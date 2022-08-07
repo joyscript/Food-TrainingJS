@@ -428,7 +428,7 @@ a {
   outline: 0;
   transition: 0.3s all;
 }
-.calculating__choose-item_active {
+.calculating__choose-item.active {
   color: #fff;
   background-color: #54ed39;
 }
