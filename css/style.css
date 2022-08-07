@@ -740,3 +740,7 @@ img.spinner.show {
   font-size: inherit;
   font-weight: inherit;
 }
+
+.attention {
+  border: 1px solid red;
+}
