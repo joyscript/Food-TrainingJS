@@ -6,7 +6,7 @@ import { slider } from './modules/slider';
 import { calc } from './modules/calc';
 import { timer } from './modules/timer';
 
-tabs();
+tabs('.tabcontent', '.tabheader__item');
 modal();
 Card();
 postData();
