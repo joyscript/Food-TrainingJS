@@ -37,6 +37,10 @@ a {
 .btn:hover {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
+.btn.enabled {
+  opacity: 0.9;
+  pointer-events: none;
+}
 .container {
   max-width: 1200px;
   margin: 0 auto;
