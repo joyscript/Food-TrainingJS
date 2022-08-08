@@ -1,4 +1,14 @@
-export const postData = () => {
+import { Modal } from './Modal';
+import { postData } from './services';
+
+export const contact = () => {
+  const modal = new Modal('.modal', '.modal__close', '[data-modal]');
+  modal.openTimeout = setTimeout(() => modal.openModal(), 3000);
+  modal.scrollHandler();
+
+  const thanksModal = new Modal('.thanks-modal', '.modal__close');
+  thanksModal.closeTimeout = () => setTimeout(() => thanksModal.closeModal(), 3000);
+
   const forms = document.querySelectorAll('form');
 
   const message = {
@@ -6,18 +16,10 @@ export const postData = () => {
     failure: 'Что-то пошло не так...',
   };
 
-  const postData = async (url, data) => {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: data,
-    });
-
-    if (!res.ok) throw new Error(`Ошибка запроса по адресу ${url}, статус: ${res.status}`);
-
-    return await res.json();
+  const showThanksModal = (message) => {
+    modal.closeModal();
+    thanksModal.modal.querySelector('.modal__title').textContent = message;
+    thanksModal.openModal();
   };
 
   const postFormData = (form) => {
@@ -25,7 +27,7 @@ export const postData = () => {
       e.preventDefault();
 
       const spinner = form.querySelector('.spinner');
-      spinner.classList.add('show');
+      spinner.classList.add('active');
 
       const formData = new FormData(form);
       const jsonData = JSON.stringify(Object.fromEntries(formData.entries()));
@@ -36,12 +38,12 @@ export const postData = () => {
           showThanksModal(message.success);
         })
         .catch((err) => {
-          console.error(err.message);
+          console.log(err.message);
           showThanksModal(message.failure);
         })
         .finally(() => {
           form.reset();
-          spinner.classList.remove('show');
+          spinner.classList.remove('active');
         });
     });
   };

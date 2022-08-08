@@ -1,58 +1,44 @@
-export const modal = () => {
-  const modal = document.querySelector('.modal');
-  const modalForm = modal.querySelector('.modal form');
-  const modalContent = modal.querySelector('.modal__content');
-  const modalOpenBtns = document.querySelectorAll('[data-modal]');
-  const scrollBar = window.innerWidth - document.documentElement.offsetWidth;
+const scrollBar = window.innerWidth - document.documentElement.offsetWidth;
 
-  let closeTimerId;
-  let thanksModal;
+export class Modal {
+  constructor(modal, closeBtn, openBtns) {
+    this.modal = document.querySelector(modal);
+    this.closeBtn = document.querySelector(closeBtn);
+    this.openBtns = document.querySelectorAll(openBtns);
+    this.openTimeout;
+    this.closeTimeout;
+    this.modalHandlers();
+  }
 
-  const openModal = () => {
-    modal.classList.add('active');
+  openModal() {
+    this.modal.classList.add('active');
     document.body.style.cssText = `overflow: hidden; padding-right: ${scrollBar}px`;
-    window.removeEventListener('scroll', openModalOnScroll);
-  };
+    if (this.closeTimeout) this.closeTimeout();
+    if (this.openTimeout) clearTimeout(this.openTimeout);
+  }
 
-  const closeModal = () => {
-    modal.classList.remove('active');
+  closeModal() {
+    this.modal.classList.remove('active');
     document.body.style = '';
-    if (modal.classList.contains('thanks')) closeThanksModal();
-  };
+    if (this.closeTimeout) clearTimeout(this.closeTimeout);
+  }
 
-  const showThanksModal = (message) => {
-    if (!modal.classList.contains('active')) openModal();
-    modal.classList.add('thanks');
-    modalForm.classList.add('hide');
+  modalHandlers() {
+    this.openBtns.forEach((btn) => btn.addEventListener('click', () => this.openModal()));
 
-    thanksModal = document.createElement('div');
-    thanksModal.classList.add('modal__title');
-    thanksModal.textContent = message;
-    modalContent.append(thanksModal);
+    this.modal.addEventListener('click', (e) => {
+      if (e.target === this.modal || e.target === this.closeBtn) this.closeModal();
+    });
 
-    closeTimerId = setTimeout(() => closeModal(), 3000);
-  };
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Escape' && this.modal.classList.contains('active')) this.closeModal();
+    });
+  }
 
-  const closeThanksModal = () => {
-    thanksModal.remove();
-    modal.classList.remove('thanks');
-    modalForm.classList.remove('hide');
-    clearTimeout(closeTimerId);
-  };
-
-  const openModalOnScroll = () => {
-    if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight) openModal();
-  };
-
-  modalOpenBtns.forEach((btn) => btn.addEventListener('click', openModal));
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal || e.target.classList.contains('modal__close')) closeModal();
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.code === 'Escape' && modal.classList.contains('active')) closeModal();
-  });
-
-  window.addEventListener('scroll', openModalOnScroll);
-};
+  scrollHandler() {
+    const openModalOnScroll = () => {
+      if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight) this.openModal();
+    };
+    window.addEventListener('scroll', openModalOnScroll, { once: true });
+  }
+}

@@ -735,7 +735,7 @@ img.spinner {
   transform: translateX(-50%);
 }
 
-img.spinner.show {
+img.spinner.active {
   display: block;
 }
 
