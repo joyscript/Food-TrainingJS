@@ -1,7 +1,7 @@
-export const timer = () => {
-  const timeBoxes = document.querySelectorAll('.timer span');
+export const timer = (timerEl, deadline, endDay, endMonth) => {
+  const timeBoxes = document.querySelectorAll(`${timerEl} span`);
 
-  let deadline = new Date('2022-08-08T00:00:00');
+  deadline = new Date(`${deadline}T00:00:00`);
 
   const updateDeadline = () => {
     if (deadline - Date.now() <= 0) {
@@ -14,8 +14,8 @@ export const timer = () => {
   const updateDeadlineText = () => {
     const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 
-    document.querySelector('#end-day').textContent = deadline.getDate();
-    document.querySelector('#end-month').textContent = months[deadline.getMonth()];
+    document.querySelector(endDay).textContent = deadline.getDate();
+    document.querySelector(endMonth).textContent = months[deadline.getMonth()];
   };
 
   const getTimeRemaining = () => {

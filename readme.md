@@ -1,1 +1,1 @@
-https://joyscript.github.io/Food-TrainingJS/
+https://joyscript.github.io/Food-TrainingJS/dist/
