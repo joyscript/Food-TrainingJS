@@ -1,10 +1,10 @@
-export const slider = () => {
-  const slider = document.querySelector('.offer__slider');
-  const slides = slider.querySelectorAll('.offer__slide');
-  const btnPrev = slider.querySelector('.offer__slider-prev');
-  const btnNext = slider.querySelector('.offer__slider-next');
-  const current = slider.querySelector('#current');
-  const total = slider.querySelector('#total');
+export const slider = (sliderEl, slide, prevBtn, nextBtn, curSlide, totalSlides) => {
+  const slider = document.querySelector(sliderEl);
+  const slides = slider.querySelectorAll(slide);
+  const btnPrev = slider.querySelector(prevBtn);
+  const btnNext = slider.querySelector(nextBtn);
+  const current = slider.querySelector(curSlide);
+  const total = slider.querySelector(totalSlides);
 
   let ind = 0;
 

@@ -1,13 +1,13 @@
 import { tabs } from './modules/tabs';
-import { Card } from './modules/Card';
 import { contact } from './modules/contact';
 import { slider } from './modules/slider';
 import { calc } from './modules/calc';
+import { cards } from './modules/cards';
 import { timer } from './modules/timer';
 
 tabs('.tabcontent', '.tabheader__item');
-Card();
+slider('.offer__slider', '.offer__slide', '.offer__slider-prev', '.offer__slider-next', '#current', '#total');
 contact();
-slider();
 calc();
+cards();
 timer();

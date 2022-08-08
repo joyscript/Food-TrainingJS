@@ -1,9 +1,9 @@
 import { Modal } from './Modal';
-import { postData } from './services';
+import { fetchData } from './services';
 
 export const contact = () => {
   const modal = new Modal('.modal', '.modal__close', '[data-modal]');
-  modal.openTimeout = setTimeout(() => modal.openModal(), 3000);
+  // modal.openTimeout = setTimeout(() => modal.openModal(), 3000);
   modal.scrollHandler();
 
   const thanksModal = new Modal('.thanks-modal', '.modal__close');
@@ -22,7 +22,7 @@ export const contact = () => {
     thanksModal.openModal();
   };
 
-  const postFormData = (form) => {
+  const postData = (form) => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
 
@@ -32,7 +32,7 @@ export const contact = () => {
       const formData = new FormData(form);
       const jsonData = JSON.stringify(Object.fromEntries(formData.entries()));
 
-      postData('https://jsonplaceholder.typicode.com/posts', jsonData)
+      fetchData('https://jsonplaceholder.typicode.com/posts', 'POST', jsonData)
         .then((data) => {
           console.log(data);
           showThanksModal(message.success);
@@ -48,5 +48,5 @@ export const contact = () => {
     });
   };
 
-  forms.forEach((form) => postFormData(form));
+  forms.forEach((form) => postData(form));
 };
