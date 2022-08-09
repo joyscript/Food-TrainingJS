@@ -3,7 +3,7 @@ import { fetchData } from './services';
 
 export const contact = () => {
   const modal = new Modal('.modal', '.modal__close', '[data-modal]');
-  // modal.openTimeout = setTimeout(() => modal.openModal(), 3000);
+  modal.openTimeout = setTimeout(() => modal.openModal(), 5000);
   modal.scrollHandler();
 
   const thanksModal = new Modal('.thanks-modal', '.modal__close');
